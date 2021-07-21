@@ -150,7 +150,7 @@ class WordEditScreen(Screen):
     def reset_view(self):
         self.ids.word_english_text.text = ""
         self.ids.word_arabic_text.text = ""
-        self.ids.word_arabic_text.reset_text()
+        self.ids.word_arabic_text.text = ""
         self.ids.word_pronunciation.text = ""
         self.ids.word_category.text = ""
         self.ids.word_topic.text = ""
