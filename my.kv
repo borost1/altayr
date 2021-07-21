@@ -74,7 +74,7 @@
                 background_normal: ''
                 background_color: 1,1,1
                 text: root.display_word
-                font_name: abspath('font/arial.ttf')
+                font_name: 'font/arial.ttf'
                 font_size: 60
                 on_press: root.swap_lang()
             Button:
@@ -187,7 +187,7 @@
     text_size: self.size
     halign: 'left'
     valign: 'middle'
-    font_name: abspath('font/arial.ttf')
+    font_name: 'font/arial.ttf'
     color: 76/255, 76/255, 109/255
     canvas.before:
         Color:
@@ -202,7 +202,7 @@
     color: 232/255, 246/255, 239/255
     halign: 'left'
     valign: 'bottom'
-    font_name: abspath('font/arial.ttf')
+    font_name: 'font/arial.ttf'
     canvas.before:
         Color:
             rgba: (76/255,76/255,109/255,1)
@@ -268,6 +268,6 @@
                 on_press: root.save_word()
 
 <ArabicTextInput>:
-    font_name: abspath('font/arial.ttf')
+    font_name: 'font/arial.ttf'
     font_size: 40
 
