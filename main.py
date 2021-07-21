@@ -165,10 +165,6 @@ class ArabicTextInput(TextInput):
         super(ArabicTextInput, self).__init__(**kwargs)
         self.text = ""
 
-    def reset_text(self):
-        print("text reset for arabic input")
-        self.text = ""
-
     def insert_text(self, substring, from_undo=False):
         if not from_undo and (len(self.text) + len(substring) > self.max_chars):
             return

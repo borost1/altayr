@@ -173,7 +173,7 @@
         orientation: "horizontal"
         Button:
             text: "Edit"
-            color: (76/255, 76/255, 109/255)
+            color: (76/255, 76/255, 109/255,1)
             background_normal: ''
             background_color: (255/255, 225/255, 148/255, 1) if root.index%2==1 else (255/255, 225/255, 148/255, 0.7)
             on_press:
@@ -221,6 +221,7 @@
             id: word_english_text
             text: root.word_english_text
             size_hint_x: 7
+            font: 'arial'
         Label:
             text: "Arabic"
         ArabicTextInput:
