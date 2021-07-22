@@ -23,10 +23,6 @@ class SettingsScreen(Screen):
         self.pronunciation = not self.pronunciation
 
 
-class MenuScreen(Screen):
-    pass
-
-
 class CardScreen(Screen):
     default_language = StringProperty("Arabic")
     pronunciation = BooleanProperty(False)
@@ -145,8 +141,6 @@ class WordEditScreen(Screen):
             del words.dictionary[self.current_index]
 
 
-        print(words.dictionary)
-
     def reset_view(self):
         self.ids.word_english_text.text = ""
         self.ids.word_arabic_text.text = ""
@@ -178,14 +172,40 @@ class ArabicTextInput(TextInput):
         self.text = get_display(arabic_reshaper.reshape(self.str))
 
 
+class FilterScreen(Screen):
+    pass
+
+
+class FilterView(RecycleView):
+    def __init__(self, **kwargs):
+        super(FilterView, self).__init__(**kwargs)
+        self.data = [
+            {
+                'text': f,
+                'enabled': True if f in words.category_filters else False
+            }
+            for f in words.categories
+        ]
+        self.refresh_from_data()
+
+    def update(self):
+        self.data = [
+            {
+                'filter_text': f,
+            }
+            for f in words.categories
+        ]
+        self.refresh_from_data()
+
+
 class MyApp(App):
     def build(self):
         sm = ScreenManager()
         sm.add_widget(CardScreen(name="CARD"))
         sm.add_widget(DictionaryScreen(name="DICTIONARY"))
         sm.add_widget(SettingsScreen(name="SETTINGS"))
-        sm.add_widget(MenuScreen(name="MENU"))
         sm.add_widget(WordEditScreen(name="WORD_EDIT"))
+        sm.add_widget(FilterScreen(name="FILTERS"))
         return sm
 
 

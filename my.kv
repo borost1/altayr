@@ -1,62 +1,90 @@
 <SettingsScreen>:
     id: settings
-    GridLayout:
-        cols: 2
-        spacing: 10, 10
-        Label:
-            size_hint: None, None
-            size: root.width/2, 60
-            text: "Default language"
-        Spinner:
-            size_hint: None, None
-            size: root.width/2, 60
-            text: root.default_language
-            values: "Arabic", "English"
-            on_text:
-                root.default_language = self.text
-        Label:
-            size_hint: None, None
-            size: root.width/2, 60
-            text: "Pronunciation helper"
-        ToggleButton:
-            size_hint: None, None
-            size: root.width/2, 60
-            text: "ON" if root.pronunciation else "OFF"
-            state: 'down' if root.pronunciation else 'normal'
-            on_press:
-                root.toggle_pronunciation()
-    Button:
-        size_hint: None, None
-        size: root.width, 50
-        text: "Back to main menu"
-        on_release:
-            root.manager.current = "MENU"
-
-<MenuScreen>:
     BoxLayout:
         orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 10, 10
+            Label:
+                size_hint: None, None
+                size: root.width/2, 60
+                text: "Default language"
+            Spinner:
+                size_hint: None, None
+                size: root.width/2, 60
+                text: root.default_language
+                values: "Arabic", "English"
+                on_text:
+                    root.default_language = self.text
+            Label:
+                size_hint: None, None
+                size: root.width/2, 60
+                text: "Pronunciation helper"
+            ToggleButton:
+                size_hint: None, None
+                size: root.width/2, 60
+                text: "ON" if root.pronunciation else "OFF"
+                state: 'down' if root.pronunciation else 'normal'
+                on_press:
+                    root.toggle_pronunciation()
+        GridLayout:
+            cols: 1
+            spacing: 10, 10
+            Button:
+                text: "Dictionary"
+                size_hint: None, None
+                size: root.width, 60
+                on_release:
+                    root.manager.current = "DICTIONARY"
+            Button:
+                text: "Filters"
+                size_hint: None, None
+                size: root.width, 60
+                on_release:
+                    root.manager.current = "FILTERS"
         Button:
             size_hint: None, None
-            size: root.width, 50
-            text: "Card"
+            size: root.width, 100
+            text: "Back"
             on_release:
-                app.root.get_screen('CARD').re_init()
                 root.manager.current = "CARD"
-        Button:
-            size_hint: None, None
-            size: root.width, 50
-            text: "Settings"
-            on_release:
-                root.manager.current = "SETTINGS"
-        Button:
-            size_hint: None, None
-            size: root.width, 50
-            text: "Dictionary"
-            on_release:
-                root.manager.current = "DICTIONARY"
 
-#:import abspath os.path.abspath
-#:import join os.path.join
+
+<FilterScreen>:
+    BoxLayout:
+        orientation: "horizontal"
+        FilterView:
+        Button:
+            size_hint: None, None
+            size: root.width, 60
+            text: "Back"
+            on_press:
+                root.manager.current = "SETTINGS"
+
+
+<FilterView>:
+    viewclass: 'FilterLabel'
+    RecycleBoxLayout:
+        data: self.data
+        default_size: None, dp(56)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+
+
+<FilterLabel@BoxLayout>
+    orientation: 'horizontal'
+    text: ""
+    enabled: True
+    Label:
+        text: root.text
+    CheckBox:
+        active: root.enabled
+        on_active: print(root.text + "-" + str(self.active))
+
+
 
 <CardScreen>:
     GridLayout:
@@ -75,7 +103,7 @@
                 color: 0,0,0,1
                 text: root.display_word
                 font_name: 'arial'
-                font_size: 60
+                font_size: 100
                 on_press: root.swap_lang()
             Button:
                 text: '>'
@@ -92,9 +120,9 @@
         Button:
             size_hint: None, None
             size: root.width, 50
-            text: "Back to menu"
+            text: "Settings"
             on_release:
-                root.manager.current = "MENU"
+                root.manager.current = "SETTINGS"
 
 
 <DictionaryScreen>:
@@ -131,16 +159,16 @@
                 app.root.current = "WORD_EDIT"
         Button:
             size_hint: None, None
-            size: root.width, 50
+            size: root.width, 60
             text: "Save & export dictionary"
             on_press:
                 root.export_dict()
         Button:
             size_hint: None, None
-            size: root.width, 50
-            text: "Back to main menu"
+            size: root.width, 60
+            text: "Back"
             on_press:
-                root.manager.current = "MENU"
+                root.manager.current = "SETTINGS"
 
 <DictView>:
     viewclass: 'WordWidget'
@@ -164,7 +192,7 @@
         text: root.english
     DictLabel:
         index: root.index
-        font_size: 30
+        font_size: 50
         size_hint_x: 4
         text: root.arabic
     BoxLayout:
