@@ -58,6 +58,21 @@ class CardScreen(Screen):
         shuffle(words.word_list)
         self.render_word()
 
+    def set_filter(self, filter_text, filter_type):
+        print(filter_type)
+        if filter_type == "category":
+            if filter_text in words.category_filters:
+                words.remove_category_filter(filter_text)
+            else:
+                words.add_category_filter(filter_text)
+        elif filter_type == "topic":
+            if filter_text in words.topic_filters:
+                words.remove_topic_filter(filter_text)
+            else:
+                words.add_topic_filter(filter_text)
+        words.set_filter()
+        self.re_init()
+
 
 class DictionaryScreen(Screen):
     def export_dict(self):
@@ -172,17 +187,18 @@ class ArabicTextInput(TextInput):
         self.text = get_display(arabic_reshaper.reshape(self.str))
 
 
-class FilterScreen(Screen):
+class CategoryFilterScreen(Screen):
     pass
 
 
-class FilterView(RecycleView):
+class CategoryFilterView(RecycleView):
     def __init__(self, **kwargs):
-        super(FilterView, self).__init__(**kwargs)
+        super(CategoryFilterView, self).__init__(**kwargs)
         self.data = [
             {
                 'text': f,
-                'enabled': True if f in words.category_filters else False
+                'enabled': True if f in words.category_filters else False,
+                'type': "category"
             }
             for f in words.categories
         ]
@@ -191,9 +207,40 @@ class FilterView(RecycleView):
     def update(self):
         self.data = [
             {
-                'filter_text': f,
+                'text': f,
+                'enabled': True if f in words.category_filters else False,
+                'type': "category"
             }
             for f in words.categories
+        ]
+        self.refresh_from_data()
+
+
+class TopicFilterScreen(Screen):
+    pass
+
+
+class TopicFilterView(RecycleView):
+    def __init__(self, **kwargs):
+        super(TopicFilterView, self).__init__(**kwargs)
+        self.data = [
+            {
+                'text': f,
+                'enabled': True if f in words.topic_filters else False,
+                'type': "topic"
+            }
+            for f in words.topics
+        ]
+        self.refresh_from_data()
+
+    def update(self):
+        self.data = [
+            {
+                'text': f,
+                'enabled': True if f in words.topic_filters else False,
+                'type': "topic"
+            }
+            for f in words.topics
         ]
         self.refresh_from_data()
 
@@ -205,7 +252,8 @@ class MyApp(App):
         sm.add_widget(DictionaryScreen(name="DICTIONARY"))
         sm.add_widget(SettingsScreen(name="SETTINGS"))
         sm.add_widget(WordEditScreen(name="WORD_EDIT"))
-        sm.add_widget(FilterScreen(name="FILTERS"))
+        sm.add_widget(CategoryFilterScreen(name="FILTERS"))
+        sm.add_widget(TopicFilterScreen(name="TOPICS"))
         return sm
 
 

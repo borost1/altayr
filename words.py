@@ -78,6 +78,10 @@ class WordDictionary:
         if len(self.topic_filters) > 0:
             self.word_list = [w for w in self.dictionary if w.topic in self.topic_filters and w.enabled]
 
+        print(self.topic_filters + self.category_filters)
+        for w in self.word_list:
+            print(w.pronunciation + " - " + w.topic)
+
     def export_dictionary(self):
 
         exp_words = []

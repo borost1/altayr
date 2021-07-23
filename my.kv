@@ -18,55 +18,85 @@
                     root.default_language = self.text
             Label:
                 size_hint: None, None
-                size: root.width/2, 60
+                size: root.width/2, dp(60)
                 text: "Pronunciation helper"
             ToggleButton:
                 size_hint: None, None
-                size: root.width/2, 60
+                size: root.width/2, dp(60)
                 text: "ON" if root.pronunciation else "OFF"
                 state: 'down' if root.pronunciation else 'normal'
                 on_press:
                     root.toggle_pronunciation()
+                    app.root.get_screen('CARD').re_init()
         GridLayout:
             cols: 1
             spacing: 10, 10
             Button:
                 text: "Dictionary"
                 size_hint: None, None
-                size: root.width, 60
+                size: root.width, dp(60)
                 on_release:
                     root.manager.current = "DICTIONARY"
             Button:
                 text: "Filters"
                 size_hint: None, None
-                size: root.width, 60
+                size: root.width, dp(60)
                 on_release:
                     root.manager.current = "FILTERS"
+            Button:
+                text: "Topics"
+                size_hint: None, None
+                size: root.width, dp(60)
+                on_release:
+                    root.manager.current = "TOPICS"
         Button:
             size_hint: None, None
-            size: root.width, 100
+            size: root.width, dp(60)
             text: "Back"
             on_release:
                 root.manager.current = "CARD"
 
 
-<FilterScreen>:
+<CategoryFilterScreen>:
     BoxLayout:
         orientation: "horizontal"
-        FilterView:
+        CategoryFilterView:
     Button:
         size_hint: None, None
-        size: root.width, 60
+        size: root.width, dp(60)
         text: "Back"
         on_press:
             root.manager.current = "SETTINGS"
 
 
-<FilterView>:
+<CategoryFilterView>:
     viewclass: 'FilterLabel'
     RecycleBoxLayout:
         data: self.data
-        default_size: None, dp(56)
+        default_size: None, dp(60)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+
+<TopicFilterScreen>:
+    BoxLayout:
+        orientation: "horizontal"
+        TopicFilterView:
+    Button:
+        size_hint: None, None
+        size: root.width, dp(60)
+        text: "Back"
+        on_press:
+            root.manager.current = "SETTINGS"
+
+
+<TopicFilterView>:
+    viewclass: 'FilterLabel'
+    RecycleBoxLayout:
+        data: self.data
+        default_size: None, dp(60)
         default_size_hint: 1, None
         size_hint_y: None
         height: self.minimum_height
@@ -78,13 +108,15 @@
     orientation: 'horizontal'
     text: ""
     enabled: True
+    type: ""
     Label:
         text: root.text
         color: 1,1,1,1
     CheckBox:
         color: 1,1,1,1
-        active: root.enabled
-        on_active: print(root.text + "-" + str(self.active))
+        active: not root.enabled
+        on_active:
+            app.root.get_screen('CARD').set_filter(root.text, root.type)
 
 
 
@@ -121,7 +153,7 @@
                 on_press: root.shuffle()
         Button:
             size_hint: None, None
-            size: root.width, 60
+            size: root.width, dp(60)
             text: "Settings"
             on_release:
                 root.manager.current = "SETTINGS"
@@ -161,13 +193,13 @@
                 app.root.current = "WORD_EDIT"
         Button:
             size_hint: None, None
-            size: root.width, 60
+            size: root.width, dp(60)
             text: "Save & export dictionary"
             on_press:
                 root.export_dict()
         Button:
             size_hint: None, None
-            size: root.width, 60
+            size: root.width, dp(60)
             text: "Back"
             on_press:
                 root.manager.current = "SETTINGS"
@@ -176,7 +208,7 @@
     viewclass: 'WordWidget'
     RecycleBoxLayout:
         data: self.data
-        default_size: None, dp(56)
+        default_size: None, dp(60)
         default_size_hint: 1, None
         size_hint_y: None
         height: self.minimum_height
