@@ -21,14 +21,19 @@ words = WordDictionary()
 class SettingsScreen(Screen):
     default_language = StringProperty("Arabic")
     pronunciation = BooleanProperty(False)
+    shuffling = BooleanProperty(False)
 
     def toggle_pronunciation(self):
         self.pronunciation = not self.pronunciation
+
+    def toggle_shuffling(self):
+        self.shuffling = not self.shuffling
 
 
 class CardScreen(Screen):
     default_language = StringProperty("Arabic")
     pronunciation = BooleanProperty(False)
+    shuffling = BooleanProperty(False)
     current_language = StringProperty("Arabic")
     current_index = NumericProperty(0)
     display_word = StringProperty(words.word_list[0].arabic)
@@ -37,9 +42,15 @@ class CardScreen(Screen):
         self.current_index = 0
         self.default_language = self.manager.get_screen("SETTINGS").default_language
         self.pronunciation = self.manager.get_screen("SETTINGS").pronunciation
+        self.shuffling = self.manager.get_screen("SETTINGS").shuffling
         self.current_language = "English" if self.default_language == "Arabic" else "Arabic"
 
     def browse(self, direction='RIGHT'):
+        if self.shuffling:
+            next_index = self.current_index
+            while self.current_index == next_index:
+                self.current_index = randint(0, len(words.word_list)-1)
+
         if len(words.word_list) != 0:
             if direction == 'RIGHT':
                 self.current_index += 1 if self.current_index < (len(words.word_list)-1) else -(len(words.word_list)-1)
@@ -57,11 +68,6 @@ class CardScreen(Screen):
             else words.word_list[self.current_index].english
         if self.pronunciation and self.current_language != self.default_language:
             self.display_word += "\n - \n" + words.word_list[self.current_index].pronunciation
-
-    def shuffle(self):
-        self.current_index = randint(0, len(words.word_list)-1)
-        shuffle(words.word_list)
-        self.render_word()
 
     def set_filter(self, filter_text, filter_type):
         print(filter_type)

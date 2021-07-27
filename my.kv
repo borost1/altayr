@@ -7,11 +7,11 @@
             spacing: 10, 10
             Label:
                 size_hint: None, None
-                size: root.width/2, 60
+                size: root.width/2, dp(60)
                 text: "Default language"
             Spinner:
                 size_hint: None, None
-                size: root.width/2, 60
+                size: root.width/2, dp(60)
                 text: root.default_language
                 values: "Arabic", "English"
                 on_text:
@@ -27,6 +27,17 @@
                 state: 'down' if root.pronunciation else 'normal'
                 on_press:
                     root.toggle_pronunciation()
+            Label:
+                size_hint: None, None
+                size: root.width/2, dp(60)
+                text: "Shuffle"
+            ToggleButton:
+                size_hint: None, None
+                size: root.width/2, dp(60)
+                text: "ON" if root.shuffling else "OFF"
+                state: 'down' if root.shuffling else 'normal'
+                on_press:
+                    root.toggle_shuffling()
         GridLayout:
             cols: 1
             spacing: 10, 10
@@ -140,7 +151,7 @@
                 size_hint_x: 0.25
                 text: "≡"
                 font_name: 'arial'
-                font_size: 60
+                font_size: 100
                 background_normal: ''
                 background_color: 1,1,1,1
                 color: 0,0,0,1
