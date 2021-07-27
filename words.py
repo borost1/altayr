@@ -72,15 +72,14 @@ class WordDictionary:
             self.topic_filters.remove(filter_str)
 
     def set_filter(self):
-        if len(self.category_filters) > 0:
-            self.word_list = [w for w in self.dictionary if w.category in self.category_filters and w.enabled]
-
-        if len(self.topic_filters) > 0:
-            self.word_list = [w for w in self.dictionary if w.topic in self.topic_filters and w.enabled]
+        self.word_list = [w for w in self.dictionary
+                          if w.category not in self.category_filters
+                          and w.topic not in self.topic_filters
+                          and w.enabled]
 
         print(self.topic_filters + self.category_filters)
         for w in self.word_list:
-            print(w.pronunciation + " - " + w.topic)
+            print(w.pronunciation + " - " + w.topic + " - " + w.category)
 
     def export_dictionary(self):
 

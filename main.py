@@ -7,7 +7,10 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.textinput import TextInput
 from words import WordDictionary, Word
 from random import randint, shuffle
-
+# from kivy.config import Config
+# Config.set('graphics', 'width', '600')
+# Config.set('graphics', 'height', '800')
+# Config.write()
 
 words = WordDictionary()
 
@@ -31,17 +34,19 @@ class CardScreen(Screen):
     display_word = StringProperty(words.word_list[0].arabic)
 
     def re_init(self):
+        self.current_index = 0
         self.default_language = self.manager.get_screen("SETTINGS").default_language
         self.pronunciation = self.manager.get_screen("SETTINGS").pronunciation
         self.current_language = "English" if self.default_language == "Arabic" else "Arabic"
 
     def browse(self, direction='RIGHT'):
-        if direction == 'RIGHT':
-            self.current_index += 1 if self.current_index < (len(words.word_list)-1) else -(len(words.word_list)-1)
-        elif direction == 'LEFT':
-            self.current_index -= 1 if self.current_index > 0 else -(len(words.word_list)-1)
-        self.current_language = self.default_language
-        self.render_word()
+        if len(words.word_list) != 0:
+            if direction == 'RIGHT':
+                self.current_index += 1 if self.current_index < (len(words.word_list)-1) else -(len(words.word_list)-1)
+            elif direction == 'LEFT':
+                self.current_index -= 1 if self.current_index > 0 else -(len(words.word_list)-1)
+            self.current_language = self.default_language
+            self.render_word()
 
     def swap_lang(self):
         self.current_language = "English" if self.current_language == "Arabic" else "Arabic"
@@ -51,7 +56,7 @@ class CardScreen(Screen):
         self.display_word = words.word_list[self.current_index].arabic if self.current_language == "Arabic" \
             else words.word_list[self.current_index].english
         if self.pronunciation and self.current_language != self.default_language:
-            self.display_word += " - " + words.word_list[self.current_index].pronunciation
+            self.display_word += "\n - \n" + words.word_list[self.current_index].pronunciation
 
     def shuffle(self):
         self.current_index = randint(0, len(words.word_list)-1)
@@ -154,7 +159,6 @@ class WordEditScreen(Screen):
     def delete_word(self):
         if self.current_index is not None:
             del words.dictionary[self.current_index]
-
 
     def reset_view(self):
         self.ids.word_english_text.text = ""
