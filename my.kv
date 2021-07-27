@@ -266,7 +266,7 @@
         text: root.english
     DictLabel:
         index: root.index
-        font_size: 60
+        font_size: dp(30)
         size_hint_x: 4
         text: root.arabic
     BoxLayout:
@@ -353,6 +353,9 @@
             active: root.word_enabled
         Button:
             text: "Back to dictionary"
+            text_size : self.width, None
+            halign: "center"
+            valign: "middle"
             on_press:
                 app.root.get_screen('DICTIONARY').ids.dictionary_view.update()
                 root.manager.current = "DICTIONARY"
