@@ -36,10 +36,12 @@ class CardScreen(Screen):
     shuffling = BooleanProperty(False)
     current_language = StringProperty("Arabic")
     current_index = NumericProperty(0)
+    list_length = NumericProperty(len(words.word_list))
     display_word = StringProperty(words.word_list[0].arabic)
 
     def re_init(self):
         self.current_index = 0
+        self.list_length = len(words.word_list)
         self.default_language = self.manager.get_screen("SETTINGS").default_language
         self.pronunciation = self.manager.get_screen("SETTINGS").pronunciation
         self.shuffling = self.manager.get_screen("SETTINGS").shuffling
@@ -57,17 +59,23 @@ class CardScreen(Screen):
             elif direction == 'LEFT':
                 self.current_index -= 1 if self.current_index > 0 else -(len(words.word_list)-1)
             self.current_language = self.default_language
-            self.render_word()
+
+        self.render_word()
 
     def swap_lang(self):
         self.current_language = "English" if self.current_language == "Arabic" else "Arabic"
         self.render_word()
 
     def render_word(self):
-        self.display_word = words.word_list[self.current_index].arabic if self.current_language == "Arabic" \
-            else words.word_list[self.current_index].english
-        if self.pronunciation and self.current_language != self.default_language:
-            self.display_word += "\n - \n" + words.word_list[self.current_index].pronunciation
+        if len(words.word_list) > 0:
+            self.ids.word_button.font_size = 100 if self.current_language == "Arabic" else 50
+            self.display_word = words.word_list[self.current_index].arabic if self.current_language == "Arabic" \
+                else words.word_list[self.current_index].english
+            if self.pronunciation and self.current_language != self.default_language:
+                self.display_word += "\n" + words.word_list[self.current_index].pronunciation
+        else:
+            self.ids.word_button.font_size = 30
+            self.display_word = "Please set your filter, your word list is empty."
 
     def set_filter(self, filter_text, filter_type):
         print(filter_type)
@@ -139,6 +147,9 @@ class WordEditScreen(Screen):
         self.word_topic = current_word.topic
         self.word_enabled = current_word.enabled
 
+        if not has_index:
+            self.ids.word_arabic_text.re_init()
+
     def save_word(self):
 
         if self.current_index is not None:
@@ -183,6 +194,11 @@ class ArabicTextInput(TextInput):
     def __init__(self, **kwargs):
         super(ArabicTextInput, self).__init__(**kwargs)
         self.text = ""
+
+    def re_init(self):
+        print("there was reinit here.")
+        self.text = ""
+        self.str = ""
 
     def insert_text(self, substring, from_undo=False):
         if not from_undo and (len(self.text) + len(substring) > self.max_chars):
@@ -265,6 +281,8 @@ class MyApp(App):
         sm.add_widget(CategoryFilterScreen(name="FILTERS"))
         sm.add_widget(TopicFilterScreen(name="TOPICS"))
         return sm
+
+
 
 
 if __name__ == '__main__':

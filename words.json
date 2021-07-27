@@ -53,7 +53,7 @@
       "ar": "ﺷﻨﻄﺔ",
       "pron": "shanta",
       "category": "noun",
-      "topic": "general",
+      "topic": "school",
       "enabled": true
     },
     {
@@ -69,7 +69,7 @@
       "ar": "ﻃﺎﻟﺐ",
       "pron": "talib",
       "category": "noun",
-      "topic": "general",
+      "topic": "school",
       "enabled": true
     },
     {
@@ -77,7 +77,7 @@
       "ar": "ﻭﺭﻕ",
       "pron": "waraq",
       "category": "noun",
-      "topic": "general",
+      "topic": "school",
       "enabled": true
     },
     {
@@ -85,7 +85,7 @@
       "ar": "ﻛﺘﺎﺏ",
       "pron": "kitab",
       "category": "noun",
-      "topic": "general",
+      "topic": "school",
       "enabled": true
     },
     {
@@ -101,7 +101,7 @@
       "ar": "ﻣﻌﻠﻢ",
       "pron": "mu'allim",
       "category": "noun",
-      "topic": "general",
+      "topic": "school",
       "enabled": true
     },
     {
@@ -109,7 +109,7 @@
       "ar": "ﻗﻠﻢ",
       "pron": "qualam",
       "category": "noun",
-      "topic": "general",
+      "topic": "school",
       "enabled": true
     },
     {
@@ -173,7 +173,95 @@
       "ar": "ﻛﺮﺍﺱ",
       "pron": "kurrasa",
       "category": "noun",
+      "topic": "school",
+      "enabled": true
+    },
+    {
+      "en": "here",
+      "ar": "ﻫﻨﺎ",
+      "pron": "huna",
+      "category": "particle",
       "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "there",
+      "ar": "ﻫﻨﺎﻙ",
+      "pron": "hunaka",
+      "category": "particle",
+      "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "what",
+      "ar": "ﻣﺎ",
+      "pron": "ma",
+      "category": "particle",
+      "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "this (m)",
+      "ar": "ﻫﺬﺍ",
+      "pron": "hadza",
+      "category": "particle",
+      "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "this (f)",
+      "ar": "ﻫﺬﻩ",
+      "pron": "hadzihi",
+      "category": "particle",
+      "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "or",
+      "ar": "ﺍﻭ",
+      "pron": "ow",
+      "category": "particle",
+      "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "table",
+      "ar": "ﻃﺎﻭﻟﺔ",
+      "pron": "tawila",
+      "category": "noun",
+      "topic": "housing",
+      "enabled": true
+    },
+    {
+      "en": "tea",
+      "ar": "ﺷﺎﻱ",
+      "pron": "shay",
+      "category": "noun",
+      "topic": "food",
+      "enabled": true
+    },
+    {
+      "en": "write",
+      "ar": "ﻛﺘﺐ",
+      "pron": "kataba",
+      "category": "verb",
+      "topic": "general",
+      "enabled": true
+    },
+    {
+      "en": "cupboard",
+      "ar": "ﺧﺰﺍﻧﺔ",
+      "pron": "hizana",
+      "category": "noun",
+      "topic": "housing",
+      "enabled": true
+    },
+    {
+      "en": "sugar",
+      "ar": "ﺳﻜﺮ",
+      "pron": "sukar",
+      "category": "adjective",
+      "topic": "food",
       "enabled": true
     }
   ]

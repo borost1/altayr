@@ -143,12 +143,16 @@
         cols: 1
         rows: 3
         BoxLayout:
+            padding: 10, 10
+            spacing: 10, 10
             orientation: "horizontal"
             size_hint: 1, 1
-            Label:
-                size_hint_x: 0.75
+            ProgressBar:
+                size_hint_x: 0.8
+                max: root.list_length - 1
+                value: root.current_index
             Button:
-                size_hint_x: 0.25
+                size_hint_x: 0.2
                 text: "≡"
                 font_name: 'arial'
                 font_size: 100
@@ -161,6 +165,7 @@
             orientation: "horizontal"
             size_hint: 1, 8
             Button:
+                id: word_button
                 size_hint_x: 8
                 background_normal: ''
                 background_color: 1,1,1
@@ -182,7 +187,7 @@
                 size_hint_x: 0.25
                 on_press: root.browse('LEFT')
                 font_name: 'arial'
-                font_size: 100
+                font_size: 50
                 size: root.width, dp(60)
                 background_normal: ''
                 background_color: 1,1,1
