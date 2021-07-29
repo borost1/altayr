@@ -81,8 +81,14 @@ class WordDictionary:
         for w in self.word_list:
             print(w.pronunciation + " - " + w.topic + " - " + w.category)
 
-    def export_dictionary(self):
+    def sort_dictionary(self):
+        self.dictionary.sort(key=lambda x: str(x.english).lower())
 
+    def sort_words(self):
+        self.word_list.sort(key=lambda x: str(x.english).lower())
+
+    def export_dictionary(self):
+        self.sort_dictionary()
         exp_words = []
 
         for w in self.dictionary:

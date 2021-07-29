@@ -2,11 +2,14 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.app import App
-from kivy.properties import StringProperty, BooleanProperty, NumericProperty, ListProperty
+from kivy.properties import StringProperty, BooleanProperty, NumericProperty, ListProperty, ObjectProperty
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.textinput import TextInput
 from words import WordDictionary, Word
 from random import randint, shuffle
+from kivy.metrics import dp
+from kivy.utils import platform
+from kivy.core.window import Window
 # from kivy.config import Config
 # Config.set('graphics', 'width', '600')
 # Config.set('graphics', 'height', '800')
@@ -21,19 +24,18 @@ words = WordDictionary()
 class SettingsScreen(Screen):
     default_language = StringProperty("Arabic")
     pronunciation = BooleanProperty(False)
-    shuffling = BooleanProperty(False)
+    dict_words = NumericProperty(len(words.dictionary))
 
     def toggle_pronunciation(self):
         self.pronunciation = not self.pronunciation
 
-    def toggle_shuffling(self):
-        self.shuffling = not self.shuffling
+    def shuffle_cards(self):
+        shuffle(words.word_list)
 
 
 class CardScreen(Screen):
     default_language = StringProperty("Arabic")
     pronunciation = BooleanProperty(False)
-    shuffling = BooleanProperty(False)
     current_language = StringProperty("Arabic")
     current_index = NumericProperty(0)
     list_length = NumericProperty(len(words.word_list))
@@ -44,14 +46,9 @@ class CardScreen(Screen):
         self.list_length = len(words.word_list)
         self.default_language = self.manager.get_screen("SETTINGS").default_language
         self.pronunciation = self.manager.get_screen("SETTINGS").pronunciation
-        self.shuffling = self.manager.get_screen("SETTINGS").shuffling
         self.current_language = "English" if self.default_language == "Arabic" else "Arabic"
 
     def browse(self, direction='RIGHT'):
-        if self.shuffling:
-            next_index = self.current_index
-            while self.current_index == next_index:
-                self.current_index = randint(0, len(words.word_list)-1)
 
         if len(words.word_list) != 0:
             if direction == 'RIGHT':
@@ -68,13 +65,13 @@ class CardScreen(Screen):
 
     def render_word(self):
         if len(words.word_list) > 0:
-            self.ids.word_button.font_size = 100 if self.current_language == "Arabic" else 50
+            self.ids.word_button.font_size = dp(100) if self.current_language == "Arabic" else dp(50)
             self.display_word = words.word_list[self.current_index].arabic if self.current_language == "Arabic" \
                 else words.word_list[self.current_index].english
             if self.pronunciation and self.current_language != self.default_language:
                 self.display_word += "\n" + words.word_list[self.current_index].pronunciation
         else:
-            self.ids.word_button.font_size = 30
+            self.ids.word_button.font_size = dp(30)
             self.display_word = "Please set your filter, your word list is empty."
 
     def set_filter(self, filter_text, filter_type):
@@ -272,6 +269,7 @@ class TopicFilterView(RecycleView):
 
 
 class MyApp(App):
+
     def build(self):
         sm = ScreenManager()
         sm.add_widget(CardScreen(name="CARD"))
@@ -281,8 +279,6 @@ class MyApp(App):
         sm.add_widget(CategoryFilterScreen(name="FILTERS"))
         sm.add_widget(TopicFilterScreen(name="TOPICS"))
         return sm
-
-
 
 
 if __name__ == '__main__':

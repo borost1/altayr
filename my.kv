@@ -5,6 +5,7 @@
         GridLayout:
             cols: 2
             spacing: 10, 10
+            size_hint_y: 2
             Label:
                 size_hint: None, None
                 size: root.width/2, dp(60)
@@ -27,38 +28,57 @@
                 state: 'down' if root.pronunciation else 'normal'
                 on_press:
                     root.toggle_pronunciation()
-            Label:
-                size_hint: None, None
-                size: root.width/2, dp(60)
-                text: "Shuffle"
-            ToggleButton:
-                size_hint: None, None
-                size: root.width/2, dp(60)
-                text: "ON" if root.shuffling else "OFF"
-                state: 'down' if root.shuffling else 'normal'
-                on_press:
-                    root.toggle_shuffling()
-        GridLayout:
-            cols: 1
-            spacing: 10, 10
-            Button:
-                text: "Dictionary"
-                size_hint: None, None
-                size: root.width, dp(60)
-                on_release:
-                    root.manager.current = "DICTIONARY"
-            Button:
-                text: "Filters"
-                size_hint: None, None
-                size: root.width, dp(60)
-                on_release:
-                    root.manager.current = "FILTERS"
-            Button:
-                text: "Topics"
-                size_hint: None, None
-                size: root.width, dp(60)
-                on_release:
-                    root.manager.current = "TOPICS"
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: 8
+            BoxLayout:
+                size_hint_y: 1
+                Label:
+                    text: "Dictionary options".upper()
+                    halign: "center"
+                    valign: "middle"
+                    font_name: "arial"
+                    font_size: dp(30)
+                    size_hint: None, None
+                    size: root.width, dp(60)
+            GridLayout:
+                size_hint_y: 9
+                cols: 2
+                spacing: 10, 10
+                Label:
+                    text: "Dictionary has " + str(root.dict_words) + " words."
+                    size_hint: None, None
+                    size: root.width/2, dp(60)
+                Button:
+                    text: "Edit dictionary"
+                    size_hint: None, None
+                    size: root.width/2, dp(60)
+                    on_release:
+                        root.manager.current = "DICTIONARY"
+                Button:
+                    text: "Word list"
+                    size_hint: None, None
+                    size: root.width/2, dp(60)
+                    on_release:
+                        root.manager.current = "DICTIONARY"
+                Button:
+                    text: "Filters"
+                    size_hint: None, None
+                    size: root.width/2, dp(60)
+                    on_release:
+                        root.manager.current = "FILTERS"
+                Button:
+                    text: "Topics"
+                    size_hint: None, None
+                    size: root.width/2, dp(60)
+                    on_release:
+                        root.manager.current = "TOPICS"
+                Button:
+                    text: "Shuffle"
+                    size_hint: None, None
+                    size: root.width/2, dp(60)
+                    on_release:
+                        root.shuffle_cards()
         Button:
             size_hint: None, None
             size: root.width, dp(60)
