@@ -1,0 +1,131 @@
+<SettingsScreen>:
+    background_color: (232/255, 246/255, 239/255, 1)
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    id: settings
+    ScrollView:
+        size: root.width, root.height
+        do_scroll_y: True
+        BoxLayout:
+            orientation: "vertical"
+            spacing: 0, 10
+            padding: 0, 0, 0, dp(100)
+            size_hint: None,None
+            height: root.height + dp(350)
+            width: root.width
+            GridLayout:
+                cols: 2
+                spacing: 0, 5
+                SettingLabel:
+                    text: "Default language"
+                SettingSpinner:
+                    text: root.default_language
+                    values: "Arabic", "English"
+                    on_text:
+                        root.default_language = self.text
+                SettingLabel:
+                    text: "Pronunciation helper"
+                SettingToggle:
+                    text: "ON" if root.pronunciation else "OFF"
+                    state: 'down' if root.pronunciation else 'normal'
+                    on_press:
+                        root.toggle_pronunciation()
+                SettingLead:
+                    text: "Dictionary options".upper()
+                SettingLabel:
+                SettingHelper:
+                    text:
+                        "There are " + str(root.dict_words) + " words currently in your dictionary. You can add, edit, remove words here."
+                SettingButton:
+                    text: "Edit dictionary"
+                    on_release: root.manager.current = "DICTIONARY"
+                SettingHelper:
+                    text: "You can save your current dictionary locally to json format."
+                SettingButton:
+                    text: "Export dictionary"
+                    on_release: root.export_dict()
+                SettingLead:
+                    text: "Word list filters".upper()
+                SettingLabel:
+                SettingHelper:
+                    text: "You can view your current active words. It has now " + str(root.list_words) + " items."
+                SettingButton:
+                    text: "Word list"
+                    on_release: print("TODO")
+                SettingHelper:
+                    text: "Filter out words based on their category: adjectives, verbs, nouns, particles etc."
+                SettingButton:
+                    text: "Categories"
+                    on_release: root.manager.current = "FILTERS"
+                SettingHelper:
+                    text: "Filter out words based on their topics: movement, food, etc."
+                SettingButton:
+                    text: "Topics"
+                    on_release: root.manager.current = "TOPICS"
+                SettingHelper:
+                    text: "You can shuffle the order of your word list."
+                SettingButton:
+                    text: "Shuffle"
+                    on_release: root.shuffle_cards()
+    Button:
+        text: "Back"
+        size_hint: None, None
+        size: root.width, dp(60)
+        on_release:
+            app.root.get_screen('CARD').re_init()
+            app.root.get_screen('CARD').browse()
+            root.manager.current = "CARD"
+
+
+<SettingLabel@Label>:
+    color: (76/255, 76/255, 109/255,1)
+    font_name: 'arial.ttf'
+    size_hint: None, 1
+    width: self.parent.width/2
+
+<SettingSpinner@Spinner>:
+    font_name: 'arial.ttf'
+    size_hint: None, 1
+    width: self.parent.width/2
+    color: (232/255, 246/255, 239/255, 1)
+    background_normal: ''
+    background_color: (76/255, 76/255, 109/255,1)
+
+<SettingToggle@ToggleButton>:
+    font_name: 'arial.ttf'
+    size_hint: None, 1
+    width: self.parent.width/2
+    color: (232/255, 246/255, 239/255, 1)
+    background_normal: ''
+    background_color: (76/255, 76/255, 109/255, 1) if self.state == 'normal' else (255/255, 225/255, 148/255, 1)
+    # background_down: (255/255, 225/255, 148/255, 1)
+
+<SettingButton@Button>:
+    font_name: 'arial.ttf'
+    size_hint: None, 1
+    width: self.parent.width/2
+    color: (232/255, 246/255, 239/255, 1)
+    background_normal: ''
+    background_color: (76/255, 76/255, 109/255, 1) if self.state == 'normal' else (255/255, 225/255, 148/255, 1)
+
+<SettingLead@SettingLabel>:
+    color: 0,0,0,1
+    background: 0,0,0,0
+    halign: "center"
+    valign: "bottom"
+    font_size: dp(20)
+    underline: True
+    text_size: self.width, None
+
+<SettingHelper@SettingLabel>:
+    color: 0,0,0,0.7
+    font_name: "arial"
+    text_size: self.width, None
+    halign: "left"
+    valign: "middle"
+    padding: 10,0
+

@@ -1,0 +1,63 @@
+<WordEditScreen>:
+    GridLayout:
+        cols: 2
+        Label:
+            text: "English"
+            size_hint_x: 3
+        TextInput:
+            id: word_english_text
+            text: root.word_english_text
+            size_hint_x: 7
+            font: 'arial'
+        Label:
+            text: "Arabic"
+        ArabicTextInput:
+            id: word_arabic_text
+            text: root.word_arabic_text
+        Label:
+            text: "Pronunciation"
+        TextInput:
+            id: word_pronunciation
+            text: root.word_pronunciation
+        Label:
+            text: "Category"
+        Spinner:
+            id: word_category
+            text: root.word_category
+            values: root.categories
+        Label:
+            text: "Topic"
+        Spinner:
+            id: word_topic
+            text: root.word_topic
+            values: root.topics
+        Label:
+            text: "Enabled"
+        CheckBox:
+            id: word_enabled
+            active: root.word_enabled
+        Button:
+            text: "Back to dictionary"
+            text_size : self.width, None
+            halign: "center"
+            valign: "middle"
+            on_press:
+                app.root.get_screen('DICTIONARY').ids.dictionary_view.update()
+                root.manager.current = "DICTIONARY"
+        GridLayout:
+            cols: 1
+            rows: 2
+            Button:
+                text: "Delete word"
+                disabled: True if root.current_index is None else False
+                on_press:
+                    root.delete_word()
+                    app.root.get_screen('DICTIONARY').ids.dictionary_view.update()
+                    root.manager.current = "DICTIONARY"
+            Button:
+                text: "Save"
+                on_press: root.save_word()
+
+<ArabicTextInput>:
+    font_name: 'arial'
+    font_size: 40

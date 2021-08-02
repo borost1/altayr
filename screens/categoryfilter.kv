@@ -1,0 +1,21 @@
+<CategoryFilterScreen>:
+    BoxLayout:
+        orientation: "horizontal"
+        CategoryFilterView:
+    Button:
+        size_hint: None, None
+        size: root.width, dp(60)
+        text: "Back"
+        on_press:
+            root.manager.current = "SETTINGS"
+
+
+<CategoryFilterView>:
+    viewclass: 'FilterLabel'
+    RecycleBoxLayout:
+        data: self.data
+        default_size: None, dp(60)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'

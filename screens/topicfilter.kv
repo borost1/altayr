@@ -1,0 +1,36 @@
+<TopicFilterScreen>:
+    BoxLayout:
+        orientation: "horizontal"
+        TopicFilterView:
+    Button:
+        size_hint: None, None
+        size: root.width, dp(60)
+        text: "Back"
+        on_press:
+            root.manager.current = "SETTINGS"
+
+
+<TopicFilterView>:
+    viewclass: 'FilterLabel'
+    RecycleBoxLayout:
+        data: self.data
+        default_size: None, dp(60)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+
+<FilterLabel@BoxLayout>
+    orientation: 'horizontal'
+    text: ""
+    enabled: True
+    type: ""
+    Label:
+        text: root.text
+        color: 1,1,1,1
+    CheckBox:
+        color: 1,1,1,1
+        active: not root.enabled
+        on_active:
+            app.root.get_screen('CARD').set_filter(root.text, root.type)
