@@ -2,12 +2,22 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.recycleview import RecycleView
 from words import words
 from kivy.lang import Builder
+from kivy.properties import ListProperty
 
 Builder.load_file("screens/topicfilter.kv")
 
 
 class TopicFilterScreen(Screen):
-    pass
+    topics = ListProperty(words.topics)
+
+    def add_topic(self, topic_str):
+        words.add_topic(topic_str)
+        self.topics = words.topics
+        self.ids.add_new_topic.text = ''
+
+    def remove_topic(self, topic_str):
+        words.remove_topic(topic_str)
+        self.topics = words.topics
 
 
 class TopicFilterView(RecycleView):

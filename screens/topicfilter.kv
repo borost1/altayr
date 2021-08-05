@@ -1,13 +1,34 @@
 <TopicFilterScreen>:
     BoxLayout:
-        orientation: "horizontal"
+        orientation: "vertical"
+        Label:
+            text: "Current topic filters".upper()
+            size_hint_y: 1
         TopicFilterView:
-    Button:
-        size_hint: None, None
-        size: root.width, dp(60)
-        text: "Back"
-        on_press:
-            root.manager.current = "SETTINGS"
+            size_hint_y: 6
+            id: topic_filters
+        GridLayout:
+            size_hint_y: 2
+            cols: 2
+            TextInput:
+                id: add_new_topic
+            Button:
+                text: "Add topic"
+                disabled: False if root.ids.add_new_topic.text != '' else True
+                on_press: Factory.AddTopicPopup().open()
+            Spinner:
+                id: remove_topic
+                text: 'choose topic to remove...'
+                values: root.topics
+            Button:
+                text: 'Remove topic'
+                on_press: Factory.DeleteTopicPopup().open()
+        Button:
+            size_hint: None, 1
+            size: root.width, dp(60)
+            text: "Back"
+            on_press:
+                root.manager.current = "SETTINGS"
 
 
 <TopicFilterView>:
@@ -34,3 +55,56 @@
         active: not root.enabled
         on_active:
             app.root.get_screen('CARD').set_filter(root.text, root.type)
+
+#:import Factory kivy.factory.Factory
+<AddTopicPopup@Popup>:
+    auto_dismiss: False
+    title: "Add new topic"
+    new_topic: app.root.get_screen('TOPICS').ids.add_new_topic.text
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            size_hint_y: 9
+            text: "Add '" + root.new_topic + "' as a new topic?"
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 1
+            Button:
+                size_hint_x: 5
+                text: 'Add'
+                on_release:
+                    app.root.get_screen('TOPICS').add_topic(root.new_topic)
+                    app.root.get_screen('TOPICS').ids.topic_filters.update()
+                    app.root.get_screen('WORD_EDIT').reset_list_props()
+                    root.dismiss()
+            Button:
+                size_hint_x: 5
+                text: 'Cancel'
+                on_release:
+                    root.dismiss()
+
+<DeleteTopicPopup@Popup>:
+    auto_dismiss: False
+    title: "Delete topic"
+    delete_topic: app.root.get_screen('TOPICS').ids.remove_topic.text
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            size_hint_y: 9
+            text: "Are you sure you want to delete '" + root.delete_topic + "' topic?"
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 1
+            Button:
+                size_hint_x: 5
+                text: 'Delete'
+                on_release:
+                    app.root.get_screen('TOPICS').remove_topic(root.delete_topic)
+                    app.root.get_screen('TOPICS').ids.topic_filters.update()
+                    app.root.get_screen('WORD_EDIT').reset_list_props()
+                    root.dismiss()
+            Button:
+                size_hint_x: 5
+                text: 'Cancel'
+                on_release:
+                    root.dismiss()

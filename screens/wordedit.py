@@ -20,6 +20,10 @@ class WordEditScreen(Screen):
     categories = ListProperty(words.categories)
     topics = ListProperty(words.topics)
 
+    def reset_list_props(self):
+        self.categories = words.categories
+        self.topics = words.topics
+
     def set_default_index(self, index=None):
         has_index = index is not None
         self.current_index = index if has_index else None

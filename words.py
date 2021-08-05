@@ -30,14 +30,14 @@ class Word:
 class WordDictionary:
     def __init__(self):
         self.dictionary = []
-        self.categories = ["noun", "adjective", "verb", "particle"]
         self.category_filters = []
-        self.topics = ["general", "housing"]
         self.topic_filters = []
 
         raw_data = open("words.json", "r", encoding="utf-8")
         data = json.load(raw_data)
         dictionary = data["dictionary"]
+        self.categories = data["categories"]
+        self.topics = data["topics"]
         for d in dictionary:
             self.dictionary.append(Word(d['en'], d['ar'], d['pron'], d['category'], d['topic'], d['enabled']))
 
@@ -54,6 +54,22 @@ class WordDictionary:
         for d in self.word_list:
             result += d.to_json()
         return result
+
+    def add_category(self, category_str):
+        if category_str not in self.categories:
+            self.categories.append(category_str)
+
+    def remove_category(self, category_str):
+        if category_str in self.categories:
+            self.categories.remove(category_str)
+
+    def add_topic(self, topic_str):
+        if topic_str not in self.topics:
+            self.topics.append(topic_str)
+
+    def remove_topic(self, topic_str):
+        if topic_str in self.topics:
+            self.topics.remove(topic_str)
 
     def add_category_filter(self, filter_str):
         if filter_str not in self.category_filters:
@@ -103,7 +119,9 @@ class WordDictionary:
             exp_words.append(word)
 
         obj = {
-            "dictionary": exp_words
+            "dictionary": exp_words,
+            "categories": self.categories,
+            "topics": self.topics
         }
         print(str(obj))
         with open("words.json", "w", encoding="utf-8") as f:
