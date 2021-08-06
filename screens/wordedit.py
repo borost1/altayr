@@ -19,6 +19,7 @@ class WordEditScreen(Screen):
     word_enabled = BooleanProperty(True)
     categories = ListProperty(words.categories)
     topics = ListProperty(words.topics)
+    word_comment = StringProperty()
 
     def reset_list_props(self):
         self.categories = words.categories
@@ -27,13 +28,14 @@ class WordEditScreen(Screen):
     def set_default_index(self, index=None):
         has_index = index is not None
         self.current_index = index if has_index else None
-        current_word = words.dictionary[self.current_index] if has_index else Word("", "", "", "", "", True)
+        current_word = words.dictionary[self.current_index] if has_index else Word("", "", "", "", "", True, "")
         self.word_english_text = current_word.english
         self.word_arabic_text = current_word.arabic
         self.word_category = current_word.category
         self.word_pronunciation = current_word.pronunciation
         self.word_topic = current_word.topic
         self.word_enabled = current_word.enabled
+        self.word_comment = current_word.comment
 
         if not has_index:
             self.ids.word_arabic_text.re_init()
@@ -47,7 +49,8 @@ class WordEditScreen(Screen):
                 self.ids.word_pronunciation.text,
                 self.ids.word_category.text,
                 self.ids.word_topic.text,
-                self.ids.word_enabled.active
+                self.ids.word_enabled.active,
+                self.ids.word_comment.text
             )
         else:
             words.dictionary.append(
@@ -57,7 +60,8 @@ class WordEditScreen(Screen):
                     self.ids.word_pronunciation.text,
                     self.ids.word_category.text,
                     self.ids.word_topic.text,
-                    self.ids.word_enabled.active
+                    self.ids.word_enabled.active,
+                    self.ids.word_comment.text
                 )
             )
 
@@ -73,6 +77,7 @@ class WordEditScreen(Screen):
         self.ids.word_category.text = ""
         self.ids.word_topic.text = ""
         self.ids.word_enabled.active = False
+        self.ids.word_comment.text = ""
 
 
 class ArabicTextInput(TextInput):

@@ -4,13 +4,14 @@ import json
 
 
 class Word:
-    def __init__(self, english, arabic, pronunciation, category, topic, enabled):
+    def __init__(self, english, arabic, pronunciation, category, topic, enabled, comment=""):
         self.english = english
         self.arabic = get_display(arabic_reshaper.reshape(arabic))
         self.pronunciation = pronunciation
         self.category = category
         self.topic = topic
         self.enabled = enabled
+        self.comment = comment
 
     def __str__(self):
         return str({
@@ -19,7 +20,8 @@ class Word:
             "pronunciation": self.pronunciation,
             "category": self.category,
             "topic": self.topic,
-            "enabled": self.enabled
+            "enabled": self.enabled,
+            "comment": self.comment
         })
 
     def to_json(self):
@@ -39,7 +41,9 @@ class WordDictionary:
         self.categories = data["categories"]
         self.topics = data["topics"]
         for d in dictionary:
-            self.dictionary.append(Word(d['en'], d['ar'], d['pron'], d['category'], d['topic'], d['enabled']))
+            self.dictionary.append(
+                Word(d['en'], d['ar'], d['pron'], d['category'], d['topic'], d['enabled'], d['comment'])
+            )
 
             if d['category'] not in self.categories:
                 self.categories.append(d['category'])
@@ -114,7 +118,8 @@ class WordDictionary:
                 "pron": w.pronunciation,
                 "category": w.category,
                 "topic": w.topic,
-                "enabled": w.enabled
+                "enabled": w.enabled,
+                "comment": w.comment
             }
             exp_words.append(word)
 
@@ -123,7 +128,7 @@ class WordDictionary:
             "categories": self.categories,
             "topics": self.topics
         }
-        print(str(obj))
+        # print(str(obj))
         with open("words.json", "w", encoding="utf-8") as f:
             json.dump(obj, f, ensure_ascii=False)
             f.close()

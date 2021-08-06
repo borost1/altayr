@@ -62,6 +62,7 @@
                 on_release:
                     app.root.get_screen('FILTERS').add_category(root.new_category)
                     app.root.get_screen('FILTERS').ids.category_filters.update()
+                    app.root.get_screen('WORD_LIST').ids.word_list.update()
                     app.root.get_screen('WORD_EDIT').reset_list_props()
                     root.dismiss()
             Button:

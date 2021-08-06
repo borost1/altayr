@@ -15,7 +15,7 @@
             spacing: 0, 10
             padding: 0, 0, 0, dp(100)
             size_hint: None,None
-            height: root.height + dp(350)
+            height: root.height + dp(250)
             width: root.width
             GridLayout:
                 cols: 2
@@ -34,6 +34,7 @@
                     state: 'down' if root.pronunciation else 'normal'
                     on_press:
                         root.toggle_pronunciation()
+                        app.root.get_screen('WORD_LIST').ids.word_list.update()
                 SettingLead:
                     text: "Dictionary options".upper()
                 SettingLabel:
@@ -55,7 +56,7 @@
                     text: "You can view your current active words. It has now " + str(root.list_words) + " items."
                 SettingButton:
                     text: "Word list"
-                    on_release: print("TODO")
+                    on_release: root.manager.current = "WORD_LIST"
                 SettingHelper:
                     text: "Filter out words based on their category: adjectives, verbs, nouns, particles etc."
                 SettingButton:

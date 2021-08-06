@@ -55,6 +55,7 @@
         active: not root.enabled
         on_active:
             app.root.get_screen('CARD').set_filter(root.text, root.type)
+            app.root.get_screen('WORD_LIST').ids.word_list.update()
 
 #:import Factory kivy.factory.Factory
 <AddTopicPopup@Popup>:
@@ -75,6 +76,7 @@
                 on_release:
                     app.root.get_screen('TOPICS').add_topic(root.new_topic)
                     app.root.get_screen('TOPICS').ids.topic_filters.update()
+                    app.root.get_screen('WORD_LIST').ids.word_list.update()
                     app.root.get_screen('WORD_EDIT').reset_list_props()
                     root.dismiss()
             Button:

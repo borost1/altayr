@@ -6,6 +6,7 @@ from screens.dictionary import DictionaryScreen
 from screens.wordedit import WordEditScreen
 from screens.categoryfilter import CategoryFilterScreen
 from screens.topicfilter import TopicFilterScreen
+from screens.wordlist import WordListScreen
 # from kivy.config import Config
 # Config.set('graphics', 'width', '600')
 # Config.set('graphics', 'height', '800')
@@ -23,6 +24,7 @@ class MyApp(App):
         sm.add_widget(WordEditScreen(name="WORD_EDIT"))
         sm.add_widget(CategoryFilterScreen(name="FILTERS"))
         sm.add_widget(TopicFilterScreen(name="TOPICS"))
+        sm.add_widget(WordListScreen(name="WORD_LIST"))
         return sm
 
 
