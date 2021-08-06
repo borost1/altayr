@@ -114,7 +114,7 @@ class WordDictionary:
     def sort_words(self):
         self.word_list.sort(key=lambda x: str(x.english).lower())
 
-    def export_dictionary(self):
+    def export_dict_object(self):
         self.sort_dictionary()
         exp_words = []
 
@@ -135,7 +135,11 @@ class WordDictionary:
             "categories": self.categories,
             "topics": self.topics
         }
-        # print(str(obj))
+
+        return obj
+
+    def export_dictionary(self):
+        obj = self.export_dict_object()
         with open("words.json", "w", encoding="utf-8") as f:
             json.dump(obj, f, ensure_ascii=False)
             f.close()
