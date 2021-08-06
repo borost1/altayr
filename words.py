@@ -1,7 +1,14 @@
+import os
+import sys
 import arabic_reshaper
 from bidi.algorithm import get_display
 import json
 
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 class Word:
     def __init__(self, english, arabic, pronunciation, category, topic, enabled, comment=""):
@@ -35,7 +42,7 @@ class WordDictionary:
         self.category_filters = []
         self.topic_filters = []
 
-        raw_data = open("words.json", "r", encoding="utf-8")
+        raw_data = open(resource_path("words.json"), "r", encoding="utf-8")
         data = json.load(raw_data)
         dictionary = data["dictionary"]
         self.categories = data["categories"]
