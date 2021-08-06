@@ -54,8 +54,8 @@ class SettingsScreen(Screen):
         self._popup.open()
 
     def load(self, path, filename):
-        with open(os.path.join(path, filename[0])) as stream:
-            self.text_input.text = stream.read()
+        with open(os.path.join(path, filename[0]), "r", encoding="utf-8") as stream:
+            words.build_dictionary(stream)
 
         self.dismiss_popup()
 

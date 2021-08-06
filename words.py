@@ -10,6 +10,7 @@ def resource_path(relative_path):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
 
+
 class Word:
     def __init__(self, english, arabic, pronunciation, category, topic, enabled, comment=""):
         self.english = english
@@ -41,8 +42,15 @@ class WordDictionary:
         self.dictionary = []
         self.category_filters = []
         self.topic_filters = []
+        self.categories = []
+        self.topics = []
+        self.word_list = []
 
         raw_data = open(resource_path("words.json"), "r", encoding="utf-8")
+        self.build_dictionary(raw_data)
+
+    def build_dictionary(self, raw_data):
+
         data = json.load(raw_data)
         dictionary = data["dictionary"]
         self.categories = data["categories"]
@@ -57,7 +65,6 @@ class WordDictionary:
 
             if d['topic'] not in self.topics:
                 self.topics.append(d['topic'])
-
         self.word_list = self.dictionary
 
     def __str__(self):
