@@ -55,6 +55,7 @@ class WordDictionary:
         dictionary = data["dictionary"]
         self.categories = data["categories"]
         self.topics = data["topics"]
+        self.dictionary.clear()
         for d in dictionary:
             self.dictionary.append(
                 Word(d['en'], d['ar'], d['pron'], d['category'], d['topic'], d['enabled'], d['comment'])

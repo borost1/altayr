@@ -53,7 +53,8 @@
                     text: "Load external JSON dictionary"
                 SettingButton:
                     text: "Load JSON"
-                    on_release: root.show_load()
+                    on_release:
+                        root.show_load()
                 SettingLead:
                     text: "Word list filters".upper()
                 SettingLabel:
@@ -108,7 +109,7 @@
     color: (232/255, 246/255, 239/255, 1)
     background_normal: ''
     background_color: (76/255, 76/255, 109/255, 1) if self.state == 'normal' else (255/255, 225/255, 148/255, 1)
-    # background_down: (255/255, 225/255, 148/255, 1)
+    background_down: (255/255, 225/255, 148/255, 1)
 
 <SettingButton@Button>:
     font_name: 'arial.ttf'
@@ -145,7 +146,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: 30
+            height: dp(60)
             Button:
                 text: "Cancel"
                 on_release: root.cancel()
@@ -167,17 +168,19 @@
         TextInput:
             id: text_input
             size_hint_y: None
-            height: 30
+            height: dp(60)
             multiline: False
 
         BoxLayout:
             size_hint_y: None
-            height: 30
+            height: dp(60)
             Button:
                 text: "Cancel"
                 on_release: root.cancel()
 
             Button:
                 text: "Save"
-                on_release: root.save(filechooser.path, text_input.text)
+                on_release:
+                    root.save(filechooser.path, text_input.text)
+                    app.root.get_screen('WORD_LIST').ids.word_list.update()
 
