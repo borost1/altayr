@@ -1,7 +1,6 @@
 <TopicFilterScreen>:
     BoxLayout:
         orientation: "vertical"
-        softinput_mode: 'pan'
         Label:
             text: "Current topic filters".upper()
             size_hint_y: 1
@@ -13,6 +12,7 @@
             cols: 2
             TextInput:
                 id: add_new_topic
+                softinput_mode: 'pan'
             Button:
                 text: "Add topic"
                 disabled: False if root.ids.add_new_topic.text != '' else True
