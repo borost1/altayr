@@ -1,0 +1,71 @@
+<CardScreen>:
+    background_color: (1,1,1,1)
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    GridLayout:
+        cols: 1
+        rows: 3
+        BoxLayout:
+            padding: 10, 10
+            spacing: 10, 10
+            orientation: "horizontal"
+            size_hint: 1, 1
+            ProgressBar:
+                size_hint_x: 0.8
+                max: root.list_length - 1
+                value: root.current_index
+            Button:
+                size_hint_x: 0.2
+                text: "≡"
+                font_name: 'arial'
+                font_size: 100
+                background_normal: ''
+                background_color: 1,1,1,1
+                color: 0,0,0,1
+                on_release:
+                    root.manager.current = "SETTINGS"
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 8
+            Button:
+                id: word_button
+                size_hint_x: 8
+                background_normal: ''
+                background_color: 1,1,1
+                color: 0,0,0,1
+                text: root.display_word
+                font_name: 'arial'
+                font_size: 100
+                text_size : self.width, None
+                halign: "center"
+                valign: "middle"
+                on_press: root.swap_lang()
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, 1
+            Label:
+                size_hint_x: 0.5
+            Button:
+                text: '<'
+                size_hint_x: 0.25
+                on_press: root.browse('LEFT')
+                font_name: 'arial'
+                font_size: 50
+                size: root.width, dp(60)
+                background_normal: ''
+                background_color: 1,1,1
+                color: 0,0,0,1
+            Button:
+                text: '>'
+                size_hint_x: 0.25
+                on_press: root.browse('RIGHT')
+                font_name: 'arial'
+                font_size: 100
+                size: root.width, dp(60)
+                background_normal: ''
+                background_color: 1,1,1
+                color: 0,0,0,1

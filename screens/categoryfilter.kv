@@ -1,0 +1,98 @@
+<CategoryFilterScreen>:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Current category filters".upper()
+            size_hint_y: 1
+        CategoryFilterView:
+            size_hint_y: 6
+            id: category_filters
+        GridLayout:
+            size_hint_y: 2
+            cols: 2
+            TextInput:
+                id: add_new_category
+            Button:
+                text: "Add category"
+                disabled: False if root.ids.add_new_category.text != '' else True
+                on_press: Factory.AddCategoryPopup().open()
+            Spinner:
+                id: remove_category
+                text: 'choose category to remove...'
+                values: root.categories
+            Button:
+                text: 'Remove category'
+                on_press: Factory.DeleteCategoryPopup().open()
+        Button:
+            size_hint: None, 1
+            size: root.width, dp(60)
+            text: "Back"
+            on_press:
+                root.manager.current = "SETTINGS"
+
+
+<CategoryFilterView>:
+    viewclass: 'FilterLabel'
+    RecycleBoxLayout:
+        data: self.data
+        default_size: None, dp(60)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+
+#:import Factory kivy.factory.Factory
+<AddCategoryPopup@Popup>:
+    auto_dismiss: False
+    title: "Add new category"
+    new_category: app.root.get_screen('FILTERS').ids.add_new_category.text
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            size_hint_y: 9
+            text: "Add '" + root.new_category + "' as a new category?"
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 1
+            Button:
+                size_hint_x: 5
+                text: 'Add'
+                on_release:
+                    app.root.get_screen('FILTERS').add_category(root.new_category)
+                    app.root.get_screen('FILTERS').ids.category_filters.update()
+                    app.root.get_screen('WORD_LIST').ids.word_list.update()
+                    app.root.get_screen('WORD_EDIT').reset_list_props()
+                    root.dismiss()
+            Button:
+                size_hint_x: 5
+                text: 'Cancel'
+                on_release:
+                    root.dismiss()
+
+<DeleteCategoryPopup@Popup>:
+    auto_dismiss: False
+    title: "Delete category"
+    delete_category: app.root.get_screen('FILTERS').ids.remove_category.text
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            size_hint_y: 9
+            text: "Are you sure you want to delete '" + root.delete_category + "' category?"
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 1
+            Button:
+                size_hint_x: 5
+                text: 'Delete'
+                on_release:
+                    app.root.get_screen('FILTERS').remove_category(root.delete_category)
+                    app.root.get_screen('FILTERS').ids.category_filters.update()
+                    app.root.get_screen('WORD_EDIT').reset_list_props()
+                    root.dismiss()
+            Button:
+                size_hint_x: 5
+                text: 'Cancel'
+                on_release:
+                    root.dismiss()

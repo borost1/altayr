@@ -1,16 +1,25 @@
+import os
+import sys
 import arabic_reshaper
 from bidi.algorithm import get_display
 import json
 
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+
 class Word:
-    def __init__(self, english, arabic, pronunciation, category, topic, enabled):
+    def __init__(self, english, arabic, pronunciation, category, topic, enabled, comment=""):
         self.english = english
         self.arabic = get_display(arabic_reshaper.reshape(arabic))
         self.pronunciation = pronunciation
         self.category = category
         self.topic = topic
         self.enabled = enabled
+        self.comment = comment
 
     def __str__(self):
         return str({
@@ -19,7 +28,8 @@ class Word:
             "pronunciation": self.pronunciation,
             "category": self.category,
             "topic": self.topic,
-            "enabled": self.enabled
+            "enabled": self.enabled,
+            "comment": self.comment
         })
 
     def to_json(self):
@@ -30,23 +40,32 @@ class Word:
 class WordDictionary:
     def __init__(self):
         self.dictionary = []
-        self.categories = ["noun", "adjective", "verb", "particle"]
         self.category_filters = []
-        self.topics = ["general", "housing"]
         self.topic_filters = []
+        self.categories = []
+        self.topics = []
+        self.word_list = []
 
-        raw_data = open("words.json", "r", encoding="utf-8")
+        raw_data = open(resource_path("words.json"), "r", encoding="utf-8")
+        self.build_dictionary(raw_data)
+
+    def build_dictionary(self, raw_data):
+
         data = json.load(raw_data)
         dictionary = data["dictionary"]
+        self.categories = data["categories"]
+        self.topics = data["topics"]
+        self.dictionary.clear()
         for d in dictionary:
-            self.dictionary.append(Word(d['en'], d['ar'], d['pron'], d['category'], d['topic'], d['enabled']))
+            self.dictionary.append(
+                Word(d['en'], d['ar'], d['pron'], d['category'], d['topic'], d['enabled'], d['comment'])
+            )
 
             if d['category'] not in self.categories:
                 self.categories.append(d['category'])
 
             if d['topic'] not in self.topics:
                 self.topics.append(d['topic'])
-
         self.word_list = self.dictionary
 
     def __str__(self):
@@ -54,6 +73,22 @@ class WordDictionary:
         for d in self.word_list:
             result += d.to_json()
         return result
+
+    def add_category(self, category_str):
+        if category_str not in self.categories:
+            self.categories.append(category_str)
+
+    def remove_category(self, category_str):
+        if category_str in self.categories:
+            self.categories.remove(category_str)
+
+    def add_topic(self, topic_str):
+        if topic_str not in self.topics:
+            self.topics.append(topic_str)
+
+    def remove_topic(self, topic_str):
+        if topic_str in self.topics:
+            self.topics.remove(topic_str)
 
     def add_category_filter(self, filter_str):
         if filter_str not in self.category_filters:
@@ -87,7 +122,7 @@ class WordDictionary:
     def sort_words(self):
         self.word_list.sort(key=lambda x: str(x.english).lower())
 
-    def export_dictionary(self):
+    def export_dict_object(self):
         self.sort_dictionary()
         exp_words = []
 
@@ -98,14 +133,24 @@ class WordDictionary:
                 "pron": w.pronunciation,
                 "category": w.category,
                 "topic": w.topic,
-                "enabled": w.enabled
+                "enabled": w.enabled,
+                "comment": w.comment
             }
             exp_words.append(word)
 
         obj = {
-            "dictionary": exp_words
+            "dictionary": exp_words,
+            "categories": self.categories,
+            "topics": self.topics
         }
-        print(str(obj))
+
+        return obj
+
+    def export_dictionary(self):
+        obj = self.export_dict_object()
         with open("words.json", "w", encoding="utf-8") as f:
             json.dump(obj, f, ensure_ascii=False)
             f.close()
+
+
+words = WordDictionary()

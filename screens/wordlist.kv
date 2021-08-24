@@ -1,0 +1,66 @@
+<WordListScreen@BoxLayout>:
+    BoxLayout:
+        orientation: "vertical"
+        WordListView:
+            id: word_list
+            size_hint_y: 9
+        Button:
+            text: "Back"
+            size_hint_y: 1
+            on_press: root.manager.current = "SETTINGS"
+
+
+<WordListView>:
+    viewclass: 'WordLabel'
+    RecycleBoxLayout:
+        data: self.data
+        # default_size: None, dp(60)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        padding: 10,30
+        spacing: 0,30
+
+<WordLabel@BoxLayout>:
+    arabic: ""
+    pronunciation: ""
+    english: ""
+    topic: ""
+    enabled: True
+    comment: ""
+    type: ""
+    index: 0
+    orientation: "vertical"
+    size_hint: None,None
+    size: root.width, dp(2400)
+    canvas.before:
+        Color:
+            rgba: (0,0,0,1)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    BoxLayout:
+        size_hint_y: 5
+        orientation: "horizontal"
+        Label:
+            text: root.arabic
+            font_name: "arial"
+            font_size: dp(50)
+            color: (1,1,1,1) if root.enabled else (1,1,1,0.7)
+            text_size : self.width, None
+            size_hint_x: 7
+        Label:
+            text: root.pronunciation if app.root.get_screen('SETTINGS').pronunciation else ""
+            color: (1,1,1,1) if root.enabled else (1,1,1,0.7)
+            text_size : self.width, None
+            font_name: "arial"
+            font_size: dp(20)
+            size_hint_x: 5
+        Label:
+            text: root.english
+            color: (1,1,1,1) if root.enabled else (1,1,1,0.7)
+            text_size : self.width, None
+            font_name: "arial"
+            font_size: dp(20)
+            size_hint_x: 5
